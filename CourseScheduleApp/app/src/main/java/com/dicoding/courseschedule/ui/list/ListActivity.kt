@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
@@ -16,8 +17,11 @@ import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.paging.CourseAdapter
 import com.dicoding.courseschedule.paging.CourseViewHolder
+import com.dicoding.courseschedule.ui.add.AddActivity
+import com.dicoding.courseschedule.ui.detail.DetailActivity
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.util.SortType
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListActivity : AppCompatActivity() {
 
@@ -48,14 +52,15 @@ class ListActivity : AppCompatActivity() {
         rvCourse.adapter = courseAdapter
     }
 
-    private fun onCourseClick(course: Course) {
-        //TODO 8 : Intent and show detailed course
+    private fun onCourseClick(course: Course) { //TODO 8 DONE?
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.COURSE_ID, course.id)
+        startActivity(intent)
     }
 
     private fun initAction() {
         val callback = Callback()
         val itemTouchHelper = ItemTouchHelper(callback)
-
         itemTouchHelper.attachToRecyclerView(rvCourse)
     }
 
@@ -68,7 +73,11 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun setFabClick() {
-        //TODO 9 : Create AddCourseActivity to set new course schedule
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
+        //TODO 9 : Create AddCourseActivity to set new course schedule DONE
     }
 
     //TODO 14 : Fixing bug : sort menu not show and course not deleted when list is swiped
@@ -99,6 +108,7 @@ class ListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_sort -> {
+                showSortMenu()
                 true
             }
             R.id.action_settings -> {
@@ -112,24 +122,18 @@ class ListActivity : AppCompatActivity() {
 
     inner class Callback : ItemTouchHelper.Callback() {
 
-        override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder
-        ): Int {
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
             return makeMovementFlags(0, ItemTouchHelper.RIGHT)
         }
 
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
             return false
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val course = (viewHolder as CourseViewHolder).getCourse()
-
+            viewModel.delete(course)
+            Toast.makeText(applicationContext, R.string.delete_success_message, Toast.LENGTH_SHORT).show()
         }
     }
 }

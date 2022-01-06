@@ -1,5 +1,6 @@
 package com.dicoding.habitapp.ui.list
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import java.util.*
 
 class HabitAdapter(
     private val onClick: (Habit) -> Unit
@@ -16,17 +18,21 @@ class HabitAdapter(
 
     //TODO 8 : Create and initialize ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
-        throw NotImplementedError("Not yet implemented")
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.habit_item, parent, false)
+        return HabitViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         //TODO 9 : Get data and bind them to ViewHolder
+        val habit = getItem(position) as Habit
+        holder.bind(habit)
     }
 
     inner class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvTitle: TextView = itemView.findViewById(R.id.item_tv_title)
-        val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
+        private val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
         private val tvStartTime: TextView = itemView.findViewById(R.id.item_tv_start_time)
         private val tvMinutes: TextView = itemView.findViewById(R.id.item_tv_minutes)
 
@@ -39,8 +45,14 @@ class HabitAdapter(
             itemView.setOnClickListener {
                 onClick(habit)
             }
+            val iconPriority = when (habit.priorityLevel.lowercase(Locale.getDefault())) {
+                "high" -> R.drawable.ic_priority_high
+                "medium" -> R.drawable.ic_priority_medium
+                "low" -> R.drawable.ic_priority_low
+                else -> R.drawable.ic_priority_low
+            }
+            ivPriority.setImageResource(iconPriority)
         }
-
     }
 
     companion object {

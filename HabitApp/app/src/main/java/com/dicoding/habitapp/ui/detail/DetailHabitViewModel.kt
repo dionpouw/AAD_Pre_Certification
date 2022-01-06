@@ -16,7 +16,7 @@ class DetailHabitViewModel(private val habitRepository: HabitRepository): ViewMo
     }
     val habit: LiveData<Habit> = _habit
 
-    fun start(habitId: Int?) {
+    fun start(habitId: Int) {
         if (habitId == _habitId.value) {
             return
         }

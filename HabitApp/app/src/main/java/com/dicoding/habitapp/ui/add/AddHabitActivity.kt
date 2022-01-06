@@ -28,7 +28,7 @@ class AddHabitActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListe
         supportActionBar?.title = getString(R.string.add_habit)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory).get(AddHabitViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[AddHabitViewModel::class.java]
 
     }
 

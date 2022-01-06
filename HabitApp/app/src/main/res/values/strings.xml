@@ -22,7 +22,7 @@
     <!-- Night Mode Preferences -->
     <string name="pref_dark_title">Dark mode</string>
     <string name="pref_key_dark" translatable="false">key_dark_mode</string>
-    <string name="pref_dark_auto" translatable="false">auto</string>
+    <string name="pref_dark_follow_system" translatable="false">follow_system</string>
     <string name="pref_dark_on" translatable="false">on</string>
     <string name="pref_dark_off" translatable="false">off</string>
     <string name="dark_mode_auto">Automatic</string>

@@ -1,7 +1,10 @@
 package com.dicoding.habitapp.data
 
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dicoding.habitapp.R
 import org.json.JSONArray
 import org.json.JSONException
@@ -9,19 +12,37 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.concurrent.Executors
 
 //TODO 3 : Define room database class and prepopulate database using JSON
+@Database(entities = [Habit::class], version = 1, exportSchema = false)
 abstract class HabitDatabase : RoomDatabase() {
 
     abstract fun habitDao(): HabitDao
 
     companion object {
-
         @Volatile
         private var INSTANCE: HabitDatabase? = null
 
         fun getInstance(context: Context): HabitDatabase {
-            throw NotImplementedError("Not yet implemented")
+
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    HabitDatabase::class.java,
+                    "task.db"
+                ).addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        INSTANCE?.let {
+                            Executors.newSingleThreadExecutor().execute {
+                                fillWithStartingData(context.applicationContext, it.habitDao())
+                            }
+                        }
+                    }
+                }).allowMainThreadQueries().build()
+                INSTANCE = instance
+                instance
+            }
         }
 
         private fun fillWithStartingData(context: Context, dao: HabitDao) {
@@ -64,6 +85,5 @@ abstract class HabitDatabase : RoomDatabase() {
             }
             return null
         }
-
     }
 }

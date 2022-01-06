@@ -10,7 +10,7 @@
         <item>@string/dark_mode_off</item>
     </string-array>
     <string-array name="dark_mode_value">
-        <item>@string/pref_dark_auto</item>
+        <item>@string/pref_dark_follow_system</item>
         <item>@string/pref_dark_on</item>
         <item>@string/pref_dark_off</item>
     </string-array>

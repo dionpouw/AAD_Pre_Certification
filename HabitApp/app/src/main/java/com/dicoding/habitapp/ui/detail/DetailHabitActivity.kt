@@ -31,7 +31,7 @@ class DetailHabitActivity : AppCompatActivity() {
         val habitId = intent.getIntExtra(HABIT_ID, 0)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory).get(DetailHabitViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[DetailHabitViewModel::class.java]
 
         viewModel.start(habitId)
         viewModel.habit.observe(this, { habit ->

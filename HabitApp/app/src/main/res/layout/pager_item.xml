@@ -13,8 +13,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
 
+        <TextView
+            android:id="@+id/pager_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Reading Book" />
+
+        <TextView
+            android:id="@+id/pager_tv_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="@+id/pager_tv_title"
+            app:layout_constraintStart_toStartOf="@+id/pager_tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/pager_tv_title"
+            tools:text="22:22" />
+
+        <ImageView
+            android:id="@+id/pager_priority_level"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/priority_level"
+            android:src="@drawable/ic_priority_high"
+            app:layout_constraintEnd_toEndOf="@+id/pager_tv_start_time"
+            app:layout_constraintStart_toStartOf="@+id/pager_tv_start_time"
+            app:layout_constraintTop_toBottomOf="@+id/pager_tv_start_time" />
+
+        <TextView
+            android:id="@+id/pager_tv_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="@+id/pager_priority_level"
+            app:layout_constraintStart_toStartOf="@+id/pager_priority_level"
+            app:layout_constraintTop_toTopOf="@+id/pager_priority_level"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="45" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/minutes"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pager_priority_level"
+            app:layout_constraintEnd_toEndOf="@+id/pager_tv_minutes"
+            app:layout_constraintStart_toStartOf="@+id/pager_tv_minutes"
+            app:layout_constraintTop_toBottomOf="@+id/pager_tv_minutes" />
+
+        <Button
+            android:id="@+id/btn_open_count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/open_count_down"
+            app:layout_constraintEnd_toEndOf="@+id/pager_priority_level"
+            app:layout_constraintStart_toStartOf="@+id/pager_priority_level"
+            app:layout_constraintTop_toBottomOf="@+id/pager_priority_level" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

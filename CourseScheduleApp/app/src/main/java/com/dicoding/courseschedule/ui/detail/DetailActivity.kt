@@ -3,18 +3,16 @@ package com.dicoding.courseschedule.ui.detail
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.util.DayName.Companion.getByNumber
 
 class DetailActivity : AppCompatActivity() {
-
-    companion object {
-        const val COURSE_ID = "courseId"
-    }
-
     private lateinit var viewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +21,11 @@ class DetailActivity : AppCompatActivity() {
 
         val courseId = intent.getIntExtra(COURSE_ID, 0)
         val factory = DetailViewModelFactory.createFactory(this, courseId)
+        viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
-
+        viewModel.course.observe(this, { course ->
+            showCourseDetail(course)
+        })
     }
 
     private fun showCourseDetail(course: Course?) {
@@ -33,6 +34,10 @@ class DetailActivity : AppCompatActivity() {
             val dayName = getByNumber(day)
             val timeFormat = String.format(timeString, dayName, startTime, endTime)
 
+            findViewById<TextView>(R.id.tv_course_name).text = course.courseName
+            findViewById<TextView>(R.id.tv_time).text = timeFormat
+            findViewById<TextView>(R.id.tv_lecturer).text = course.lecturer
+            findViewById<TextView>(R.id.tv_note).text = course.note
         }
     }
 
@@ -49,6 +54,7 @@ class DetailActivity : AppCompatActivity() {
                     setNegativeButton(getString(R.string.no), null)
                     setPositiveButton(getString(R.string.yes)) { _, _ ->
                         viewModel.delete()
+                        Toast.makeText(applicationContext, "Course deleted", Toast.LENGTH_SHORT).show()
                         finish()
                     }
                     show()
@@ -56,5 +62,9 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val COURSE_ID = "courseId"
     }
 }
